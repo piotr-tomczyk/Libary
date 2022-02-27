@@ -5,8 +5,7 @@ function Book(title, author, pages, read){
     this.pages = pages;
     this.read = read;
     this.info = function () {
-        console.log("on info function:" + read);
-        return this.title + " by " + this.author + ", " + this.pages + " pages, " + (read? "read " : "not read yet");
+        return this.title + " by " + this.author + ", " + this.pages + " pages, " + (this.read? "read " : "not read yet");
     }
 }
 function AddToLibary(book, libary){
@@ -44,7 +43,8 @@ look.addEventListener('click', function show_anwers(){
         var newbutton = document.createElement('button');
         newbutton.id = "btn-book" + i;
         newbutton.addEventListener('click', (event)=>{
-            libary.splice([parseInt(event.path[0].id.slice(-1))], 1);
+            let index = parseInt(event.path[0].id.slice(-1));
+            libary.splice([index], 1);
             show_anwers();
         });
         var changereadbutton = document.createElement('button');
@@ -52,7 +52,8 @@ look.addEventListener('click', function show_anwers(){
         changereadbutton.classList = "remove";
         changereadbutton.textContent = "Change Read";
         changereadbutton.addEventListener('click', (event)=>{
-            libary[parseInt(event.path[0].id.slice(-1))].read = !libary[parseInt(event.path[0].id.slice(-1))].read;
+            let index = parseInt(event.path[0].id.slice(-1));
+            libary[index].read = !libary[index].read;
             show_anwers();
         });
         newbutton.textContent = "Remove";
