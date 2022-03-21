@@ -1,18 +1,26 @@
-let libary = [];
-function Book(title, author, pages, read){
-    this.title = title;
-    this.author = author;
-    this.pages = pages;
-    this.read = read;
-    this.info = function () {
+class Libary{
+    libary_t = []
+    AddToLibary(book){
+        this.libary_t.push(book);
+        return this.libary_t;
+    }
+}
+let libary = new Libary();
+class Book{
+    title = "Title"
+    author = "Autor"
+    pages = 0
+    read = false
+    constructor(title, author, pages, read){
+        this.title = title;
+        this.author = author;
+        this.pages = pages;
+        this.read = read;
+    }
+    info(){
         return this.title + " by " + this.author + ", " + this.pages + " pages, " + (this.read? "read " : "not read yet");
     }
 }
-function AddToLibary(book, libary){
-    libary.push(book);
-    return libary;
-}
-
 function removeElementsByClass(className){
     var elements = document.getElementsByClassName(className);
     while(elements.length > 0){
@@ -23,28 +31,27 @@ function removeElementsByClass(className){
         elements[0].parentNode.removeChild(elements[0]);
     }
 }
-// AddToLibary(new Book("Hobbit", "J.R.R Tolkien", "242", true), libary);
 let form = document.querySelector("#libary-form");
 form.addEventListener('submit', (event) => {
     event.preventDefault();
-    AddToLibary(new Book(event.path[0][0].value, event.path[0][1].value, event.path[0][2].value, event.path[0][3].checked), libary);
+    libary.AddToLibary(new Book(event.path[0][0].value, event.path[0][1].value, event.path[0][2].value, event.path[0][3].checked));
 });
 let look = document.querySelector('#look');
 look.addEventListener('click', function show_anwers(){
     removeElementsByClass("remove");
     var answers = document.createDocumentFragment();
-    for(var i = 0; i < libary.length; i++){
+    for(var i = 0; i < libary.libary_t.length; i++){
         var newparentdiv = document.createElement('div');
         newparentdiv.className = "book-parent";
         var newdiv = document.createElement('div');
-        newdiv.textContent = libary[i].info();
+        newdiv.textContent = libary.libary_t[i].info();
         newdiv.id = "book" + i;
         newdiv.className = "remove";
         var newbutton = document.createElement('button');
         newbutton.id = "btn-book" + i;
         newbutton.addEventListener('click', (event)=>{
             let index = parseInt(event.path[0].id.slice(-1));
-            libary.splice([index], 1);
+            libary.libary_t.splice([index], 1);
             show_anwers();
         });
         var changereadbutton = document.createElement('button');
@@ -53,7 +60,7 @@ look.addEventListener('click', function show_anwers(){
         changereadbutton.textContent = "Change Read";
         changereadbutton.addEventListener('click', (event)=>{
             let index = parseInt(event.path[0].id.slice(-1));
-            libary[index].read = !libary[index].read;
+            libary.libary_t[index].read = !libary.libary_t[index].read;
             show_anwers();
         });
         newbutton.textContent = "Remove";
