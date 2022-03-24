@@ -32,10 +32,62 @@ function removeElementsByClass(className){
     }
 }
 let form = document.querySelector("#libary-form");
+let title = document.querySelector('#title');
+let author = document.querySelector('#author');
+let radio1 = document.querySelector('#read');
+let radio2 = document.querySelector('#not-read');
+let pages = document.querySelector('#pages');
 form.addEventListener('submit', (event) => {
     event.preventDefault();
-    libary.AddToLibary(new Book(event.path[0][0].value, event.path[0][1].value, event.path[0][2].value, event.path[0][3].checked));
+    console.log(event);
+    if(checkError()){
+        libary.AddToLibary(new Book(event.path[0][0].value, event.path[0][1].value, event.path[0][2].value, event.path[0][3].checked));
+    }
+    return;
 });
+
+const checkError = () => {
+    let addForm = true;
+    let title_info = document.querySelector('#title-info');
+    let author_info = document.querySelector('#author-info');
+    let pages_info = document.querySelector('#pages-info');
+    let read_info = document.querySelector('#read-info');
+    if (title.value === '') {
+        title_info.textContent = "Title cannot be empty!!!";
+        addForm = false;
+    }
+    else {
+        title_info.textContent = "";
+    }
+    if (author.value === ''){
+        author_info.textContent = "Author cannot be empty!!!";
+        addForm = false;
+    }
+    else {
+        author_info.textContent = "";
+    }   
+    
+    if (pages.value === '' || pages.value === '0'){
+        pages_info.textContent = "Pages cannot be empty or 0!!!";
+        addForm = false;
+    }
+    else {
+        pages_info.textContent = "";
+    }
+    if (radio1.checked == false && radio2.checked == false){
+        read_info.textContent = "U must select if u read book or not!!";
+        addForm = false;
+    }
+    else {
+        read_info.textContent = "";
+    }
+    if (!addForm){
+        console.log("you");
+        return false;
+    }
+    console.log("me");
+    return true;
+};
 let look = document.querySelector('#look');
 look.addEventListener('click', function show_anwers(){
     removeElementsByClass("remove");
